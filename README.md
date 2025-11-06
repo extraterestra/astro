@@ -131,6 +131,6 @@ docker run --rm -p 8080:8080 astro:local
 
 ## License
 
-MIT
+N/A
 
 
