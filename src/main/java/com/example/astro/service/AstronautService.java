@@ -1,7 +1,6 @@
 package com.example.astro.service;
 
 import com.example.astro.domain.Astronaut;
-import com.example.astro.domain.Mission;
 import com.example.astro.domain.ports.AstronautQueryPort;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +8,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AstronautService {
@@ -25,6 +25,33 @@ public class AstronautService {
 
   public List<Astronaut> findByRange(LocalDate from, LocalDate to) {
     return port.findOverlapping(from, to);
+  }
+
+  public Astronaut create(Astronaut prototype) {
+    String id = UUID.randomUUID().toString();
+    Astronaut toSave = new Astronaut(
+      id,
+      prototype.getFirstName(),
+      prototype.getLastName(),
+      prototype.getDateOfBirth(),
+      prototype.getMissions()
+    );
+    return port.save(toSave);
+  }
+
+  public Optional<Astronaut> update(String id, Astronaut prototype) {
+    Astronaut updated = new Astronaut(
+      id,
+      prototype.getFirstName(),
+      prototype.getLastName(),
+      prototype.getDateOfBirth(),
+      prototype.getMissions()
+    );
+    return port.update(id, updated);
+  }
+
+  public boolean delete(String id) {
+    return port.deleteById(id);
   }
 
   public long totalDaysOnISS(Astronaut a) {

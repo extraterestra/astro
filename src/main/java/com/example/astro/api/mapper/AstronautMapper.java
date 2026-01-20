@@ -37,12 +37,28 @@ public class AstronautMapper {
     return dto;
   }
 
+  public Astronaut toDomain(AstronautDto dto) {
+    return new Astronaut(
+      dto.id,
+      dto.firstName,
+      dto.lastName,
+      dto.dateOfBirth,
+      dto.missions == null
+        ? java.util.List.of()
+        : dto.missions.stream().map(this::toDomain).collect(Collectors.toList())
+    );
+  }
+
   private MissionDto toDto(Mission m) {
     MissionDto dto = new MissionDto();
     dto.missionName = m.getMissionName();
     dto.startDate = m.getStartDate();
     dto.endDate = m.getEndDate();
     return dto;
+  }
+
+  private Mission toDomain(MissionDto dto) {
+    return new Mission(dto.missionName, dto.startDate, dto.endDate);
   }
 }
 

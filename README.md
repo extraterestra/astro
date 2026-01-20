@@ -102,6 +102,59 @@ Notes:
 - `dateTo` is optional; if omitted it defaults to today.
 - The range endpoint returns `daysOnISSWithinRange` for that window.
 
+## Swagger / API documentation
+
+This service exposes interactive Swagger / OpenAPI documentation via **springdoc-openapi**.
+
+- **Local Swagger UI**
+  - URL: `http://localhost:8080/swagger-ui.html`
+  - Shows all endpoints (`GET`, `POST`, `PUT`, `DELETE`) under the **Astronauts** tag.
+  - You can use the **Try it out** button to execute requests directly from the browser.
+
+- **Deployed (Railway) Swagger UI**
+  - If deployed to Railway with a public domain (for example `https://astro-production-4c19.up.railway.app`), Swagger UI is available at:
+    - `https://astro-production-4c19.up.railway.app/swagger-ui.html`
+
+### Documented endpoints
+
+- **GET `/astronauts?dateFrom=YYYY-MM-DD&dateTo=YYYY-MM-DD`**
+  - 200: List of astronauts overlapping the date range.
+  - 400: Invalid date range (e.g., `dateTo` before `dateFrom`).
+
+- **GET `/astronauts/{id}`**
+  - 200: Astronaut found.
+  - 404: Astronaut not found.
+
+- **POST `/astronauts`**
+  - Generates a new `id` and creates an astronaut.
+  - 201: Astronaut created (with `Location` header pointing to `/astronauts/{id}`).
+  - 400: Invalid request body.
+  - Example request body (also shown in Swagger examples):
+
+    ```json
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "dateOfBirth": "1980-01-01",
+      "missions": [
+        {
+          "missionName": "Expedition 99",
+          "startDate": "2025-01-01",
+          "endDate": "2025-06-01"
+        }
+      ]
+    }
+    ```
+
+- **PUT `/astronauts/{id}`**
+  - Replaces astronaut data for the given `id` (path `id` wins over any `id` in the body).
+  - 200: Astronaut updated.
+  - 404: Astronaut not found.
+
+- **DELETE `/astronauts/{id}`**
+  - 204: Astronaut deleted.
+  - 404: Astronaut not found.
+
 ## Docker (optional)
 
 If you prefer containerized runs, add a Dockerfile like:

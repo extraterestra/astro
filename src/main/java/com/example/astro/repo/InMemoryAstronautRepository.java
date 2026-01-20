@@ -32,6 +32,26 @@ public class InMemoryAstronautRepository implements AstronautQueryPort {
     return new ArrayList<>(store.values());
   }
 
+  @Override
+  public Astronaut save(Astronaut astronaut) {
+    store.put(astronaut.getId(), astronaut);
+    return astronaut;
+  }
+
+  @Override
+  public Optional<Astronaut> update(String id, Astronaut astronaut) {
+    if (!store.containsKey(id)) {
+      return Optional.empty();
+    }
+    store.put(id, astronaut);
+    return Optional.of(astronaut);
+  }
+
+  @Override
+  public boolean deleteById(String id) {
+    return store.remove(id) != null;
+  }
+
   void putAll(Collection<Astronaut> astronauts) {
     astronauts.forEach(a -> store.put(a.getId(), a));
   }

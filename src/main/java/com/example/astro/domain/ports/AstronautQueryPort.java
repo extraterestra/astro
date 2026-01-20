@@ -9,6 +9,9 @@ public interface AstronautQueryPort {
   Optional<Astronaut> findById(String id);
   List<Astronaut> findOverlapping(LocalDate from, LocalDate to);
   List<Astronaut> findAll();
+  Astronaut save(Astronaut astronaut);
+  Optional<Astronaut> update(String id, Astronaut astronaut);
+  boolean deleteById(String id);
 }
 
 
